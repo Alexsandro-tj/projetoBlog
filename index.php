@@ -31,30 +31,15 @@ if ($result = mysqli_query($conexao, $sql)) {
     }
 }
 
-
+/* $BLOCO_POST = []; */
 $sql = "SELECT * FROM t_post";
 if ($result = mysqli_query($conexao, $sql))
-    if ($registro = mysqli_fetch_row($result))
-        $BLOCO_POST = array(
-            1 => array(
-                "img" => "$registro[1]",
-                "titulo" => "$registro[2]",
-                "sTitulo" => "$registro[3]",
-                "data" => "$registro[4]",
-                "texto" => "$registro[5]",
-                "coments" => "$registro[6]"
-            ),
-            2 => array(
-                "img" => "img/bridge.jpg",
-                "titulo" => "GUARTELÁ",
-                "sTitulo" => "Um passeio inesquecível,",
-                "data" => "Agosto, 29, 2025",
-                "texto" => "Cânion Guartelá é um cânion brasileiro situado no planalto dos campos Gerais, entre os municípios de Castro e Tibagi, no Paraná. É considerado sexto mais cânion do mundo em extensão e o mais longo do Brasil. O cânion do Guartelá é uma garganta retilínea com cerca de 30 km de extensão e desnivel máximo de 450 metros. Foi escavado pelo Rio Iapó, que...",
-                "coments" => "10"
-            ),
-        ); 
+    while ($registro = mysqli_fetch_row($result)) {
+        $BLOCO_POST[] = $registro;
+    }
+
 /* mysqli_close($conexao); */
-function exibe_categoria( string $nome, bool $selecionado)
+function exibe_categoria(string $nome, bool $selecionado)
 {
     $texto = "";
     if ($selecionado)
@@ -117,28 +102,29 @@ function rodape(string $autor)
 
             <?php
             while ($NPostagens < 2) {
-                $NPostagens++ ?>
+            ?>
                 <div class="w3-card-4 w3-margin w3-white">
-                    <img src=" <?php echo $BLOCO_POST[$NPostagens]['img'] ?>" alt="Nature" style="width:100%">
+                    <img src=" <?php echo $BLOCO_POST[$NPostagens][1] ?>" alt="Nature" style="width:100%">
 
                     <div class="w3-container">
-                        <h3><?php echo $NPostagens . " - " ?> <b><?php echo $BLOCO_POST[$NPostagens]['titulo'] ?></b></h3>
-                        <h5> <?php echo $BLOCO_POST[$NPostagens]['sTitulo'] ?> <span class="w3-opacity"><?php echo $BLOCO_POST[$NPostagens]['data'] ?></span></h5>
+                        <h3><?php echo $BLOCO_POST[$NPostagens][0] . " - " ?> <b><?php echo $BLOCO_POST[$NPostagens][2] ?></b></h3>
+                        <h5> <?php echo $BLOCO_POST[$NPostagens][3] ?> <span class="w3-opacity"><?php echo $BLOCO_POST[$NPostagens][4] ?></span></h5>
                     </div>
 
                     <div class="w3-container">
-                        <p><?php echo $BLOCO_POST[$NPostagens]['texto'] ?></p>
+                        <p><?php echo $BLOCO_POST[$NPostagens][5] ?></p>
                         <div class="w3-row">
                             <div class="w3-colum" style="width:80%">
                                 <p><button class="w3-button w3-padding-large w3-white w3-border">Leia Mais...</button></p>
                             </div>
                             <div class="w3-colum w3-hide-small" style="width:20%">
-                                <p><span class="w3-padding-large w3-right"><b>COMENTÁRIOS</b><span class="w3-tag"><?php echo $BLOCO_POST[$NPostagens]['coments'] ?></span></span></p>
+                                <p><span class="w3-padding-large w3-right"><b>COMENTÁRIOS</b><span class="w3-tag"><?php echo $BLOCO_POST[$NPostagens][6] ?></span></span></p>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php
+                $NPostagens++;
             }
             ?>
         </div>
