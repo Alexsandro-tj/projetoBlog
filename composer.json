@@ -1,0 +1,17 @@
+{
+    "name": "usurio/blog_pessoal",
+    "autoload": {
+        "psr-4": {
+            "Usurio\\BlogPessoal\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ALEX SANDRO SOUZA DOS SANTOS",
+            "email": "alexsandrotj94@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.8"
+    }
+}

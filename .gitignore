@@ -1,0 +1,4 @@
+/vendor/
+
+#ignora credenciais de banco de dados
+.env

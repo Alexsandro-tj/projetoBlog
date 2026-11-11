@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
+$dotenv->load();
 
 //header("Content-Type:text/html; charset=ISO-8859-1", true);
 // conexão com BD MySQL
-define("USUARIO", "root");
+/* define("USUARIO", "root");
 define("SENHA", "SANDRO.rd650");
 define("DB", "blog");
-define("SERVER", "localhost:3306");
-$conexao = mysqli_connect(SERVER, USUARIO, SENHA, DB);
+define("SERVER", "localhost:3306"); */
+
+$host = $_ENV['DB_HOST'];
+$port = $_ENV['DB_PORT'];
+$db = $_ENV['DB_NAME'];
+$user = $_ENV['DB_USER'];
+$pass = $_ENV['DB_PASS'];
+
+
+$conexao = mysqli_connect($host, $user, $pass, $db, $port);
 
 //verifica status da conexão
 if (mysqli_errno($conexao)) {
@@ -85,7 +96,7 @@ function rodape(string $autor)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Blog pessoal</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/6/w3.css">
     <link rel=”stylesheet” href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/4.7.0/css/font-awesome.min.css">
 
 </head>
