@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <?php
-
+/** @var PostagensModel $model
+ */
 require_once __DIR__ . '/../vendor/autoload.php';
-/* $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
-$dotenv->load(); */
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 //header("Content-Type:text/html; charset=ISO-8859-1", true);
 // conexão com BD MySQL
@@ -18,14 +19,18 @@ $db = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
 $pass = $_ENV['DB_PASS'];
 
+try {
+    $conexao = mysqli_connect($host, $user, $pass, $db, $port);
+} catch (\Throwable $e) {
 
-$conexao = mysqli_connect($host, $user, $pass, $db, $port);
+    echo "Erro de sistema: " . $e->getMessage() . $e->getCode();
+}
 
 //verifica status da conexão
-if (mysqli_errno($conexao)) {
+/* if ()) {
     //avisa que aconteceu algo errado e apresenta o motivo do erro na conexão
     echo "Falha ao conectar com MySQl. Motivo: " . mysqli_connect_error();
-} /* else {
+} */ /* else {
     //a conexão foi realizada com sucesso
     echo "Status OK. <br> Banco de dados " . "conectado!";
 } */
@@ -52,10 +57,8 @@ if ($result = mysqli_query($conexao, $sql))
 /* mysqli_close($conexao); */
 function exibe_categoria(string $nome, bool $selecionado)
 {
-    $texto = "";
-    if ($selecionado)
-        $texto = "<span class = 'w3-tag w3-black w3-margin-bottom'>";
-    else "<span class = 'w3-tag w3-light-grey w3-small w3-margin-bottom'>";
+    $texto = ($selecionado)? "<span class = 'w3-tag w3-black w3-margin-bottom'>"
+    : "<span class = 'w3-tag w3-light-grey w3-small w3-margin-bottom'>";
 
     $texto = $texto . $nome . "</span>";
     return ($texto);
@@ -80,7 +83,7 @@ function rodape(string $autor)
     $texto = $texto . "</div>";
     $texto = $texto . "<div class = 'w3-container w3-cell w3-cell-bottom'>";
     $texto = $texto . "<br><br><br>";
-    $texto = $texto . "<p>Introdução ao Coding Web by " . $autor;
+    $texto = $texto . "<p>Todos os direitos reservados © Developed by " . $autor;
     $texto = $texto . "</p>" . "</div>";
     $texto = $texto . "<div class = 'w3-container w3-cell w3-cell-top'>";
     $texto = $texto . "<a href = '#' class = 'w3-padding w3-xxlarge fa fa-facebook'>" . "</a>";
@@ -102,9 +105,10 @@ function rodape(string $autor)
 </head>
 
 <body class="w3-light-grey">
+    
     <!--Cabeçalho-->
     <?php
-    echo monta_cabecalho_principal($BLOCO_APRESENT['nome']);
+    echo monta_cabecalho_principal($model->registro[0]['autor']);
     ?>
     <!--Conteúdo principal-->
     <div class="w3-row">
@@ -115,7 +119,7 @@ function rodape(string $autor)
             while ($NPostagens < 2) {
             ?>
                 <div class="w3-card-4 w3-margin w3-white">
-                    <img src=" <?php echo $BLOCO_POST[$NPostagens][1] ?>" alt="Nature" style="width:100%">
+                    <img src=" <?php echo $BLOCO_POST[$NPostagens][1] ?>" alt="Nature" style="width:100%;height: 350px;">
 
                     <div class="w3-container">
                         <h3><?php echo $BLOCO_POST[$NPostagens][0] . " - " ?> <b><?php echo $BLOCO_POST[$NPostagens][2] ?></b></h3>
@@ -145,19 +149,22 @@ function rodape(string $autor)
             <div class="w3-card w3-margin">
 
                 <?php
-                $sql = 'SELECT * FROM t_apres';
-                if ($result = mysqli_query($conexao, $sql)) {
+                /* $sql = 'SELECT * FROM t_apres';
+                if ($result = mysqli_query($conexao, $sql)) { */
 
-                    while ($registro = mysqli_fetch_row($result)) {
-                        echo "<img src='$registro[3]' width='470px'>";
-                        echo "<div class='w3-container w3-white'>
-                    <h4>Meu Nome é <b>$registro[1]</b></h4>
-                    <p>$registro[2]</P>
+                /*  foreach ($model->registro[0] as $key) {
+    echo $key */
+
+
+                echo "<img src='{$model->registro[0]['foto']}' width='470px'>";
+                echo "<div class='w3-container w3-white'>
+                    <h4>Meu Nome é <b>{$model->registro[0]['autor']}</b></h4>
+                    <p>{$model->registro[0]['descr']}</P>
                     </div>
                     </div>";
-                    }
-                    // mysqli_free_result($result);
-                }
+
+                // mysqli_free_result($result);
+
                 ?>
 
 
@@ -208,7 +215,7 @@ function rodape(string $autor)
         </div>
         <!--Rodapé da Pagina-->
         <?php
-        echo rodape($BLOCO_APRESENT['nome']);
+        echo rodape($model->registro[0]['autor']);
         ?>
 </body>
 

@@ -1,13 +1,13 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
 $dotenv->load();
 
 class PostagensDAO
 {
 
-    public object $conexao;
+    public $conexao;
 
     public function __construct()
     {
@@ -29,5 +29,13 @@ class PostagensDAO
         } catch (PDOException $e) {
             echo "Erro de sistema: " . $e->getMessage() . $e->getCode();
         }
+    }
+
+    public function selectOwnerBlog()
+    {
+        $sql = "SELECT * FROM t_apres";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
