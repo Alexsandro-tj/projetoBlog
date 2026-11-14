@@ -2,16 +2,12 @@
 <?php
 /** @var PostagensModel $model
  */
-require_once __DIR__ . '/../vendor/autoload.php';
+/* require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
-
+ */
 //header("Content-Type:text/html; charset=ISO-8859-1", true);
 // conexão com BD MySQL
-/* define("USUARIO", "root");
-define("SENHA", "SANDRO.rd650");
-define("DB", "blog");
-define("SERVER", "localhost:3306"); */
 
 $host = $_ENV['DB_HOST'];
 $port = $_ENV['DB_PORT'];
@@ -26,17 +22,9 @@ try {
     echo "Erro de sistema: " . $e->getMessage() . $e->getCode();
 }
 
-//verifica status da conexão
-/* if ()) {
-    //avisa que aconteceu algo errado e apresenta o motivo do erro na conexão
-    echo "Falha ao conectar com MySQl. Motivo: " . mysqli_connect_error();
-} */ /* else {
-    //a conexão foi realizada com sucesso
-    echo "Status OK. <br> Banco de dados " . "conectado!";
-} */
 
 $NPostagens = 0;
-$sql = "SELECT * FROM t_apres";
+/* $sql = "SELECT * FROM t_apres";
 if ($result = mysqli_query($conexao, $sql)) {
     if ($registro = mysqli_fetch_row($result)) {
         $BLOCO_APRESENT = array(
@@ -45,14 +33,14 @@ if ($result = mysqli_query($conexao, $sql)) {
             "descri" => "$registro[1]"
         );
     }
-}
+} */
 
-/* $BLOCO_POST = []; */
+ $BLOCO_POST = []; 
 $sql = "SELECT * FROM t_post";
 if ($result = mysqli_query($conexao, $sql))
     while ($registro = mysqli_fetch_row($result)) {
         $BLOCO_POST[] = $registro;
-    }
+    } 
 
 /* mysqli_close($conexao); */
 function exibe_categoria(string $nome, bool $selecionado)
@@ -149,22 +137,12 @@ function rodape(string $autor)
             <div class="w3-card w3-margin">
 
                 <?php
-                /* $sql = 'SELECT * FROM t_apres';
-                if ($result = mysqli_query($conexao, $sql)) { */
-
-                /*  foreach ($model->registro[0] as $key) {
-    echo $key */
-
-
                 echo "<img src='{$model->registro[0]['foto']}' width='470px'>";
                 echo "<div class='w3-container w3-white'>
                     <h4>Meu Nome é <b>{$model->registro[0]['autor']}</b></h4>
                     <p>{$model->registro[0]['descr']}</P>
                     </div>
                     </div>";
-
-                // mysqli_free_result($result);
-
                 ?>
 
 
