@@ -16,6 +16,10 @@ class PostagensController
     {
         $model = new PostagensModel;
         $model->showApresentacaoOwner();
-        require_once __DIR__ . '/../../View/home.php';
+        $modelPostagens = new PostagensModel;
+        $modelPostagens->showPostagens();
+        $modelTopPostagens = new PostagensModel;
+        $modelTopPostagens->showTopPostagens();
+        require_once __DIR__ . '/../View/home.php';
     }
 }

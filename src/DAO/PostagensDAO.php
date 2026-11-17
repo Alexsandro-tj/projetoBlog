@@ -4,11 +4,6 @@ namespace App\DAO;
 
 use PDO;
 use PDOException;
-use Dotenv\Dotenv;
-
-
-// require_once __DIR__ . '/../vendor/autoload.php';
-
 
 class PostagensDAO
 {
@@ -39,9 +34,39 @@ class PostagensDAO
 
     public function selectOwnerBlog()
     {
-        $sql = "SELECT * FROM t_apres";
-        $stmt = $this->conexao->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $sql = "SELECT * FROM t_apres";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException) {
+            echo json_encode(["Erro" => "Informações Não Encontradas!"], JSON_UNESCAPED_UNICODE) . http_response_code(404);
+        }
+    }
+    public function selectT_Post()
+    {
+        try {
+            $sql = "SELECT * FROM t_post";
+
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException) {
+            $message = json_encode(["Erro" => "Postagens Não Econtradas!"], JSON_UNESCAPED_UNICODE) . http_response_code(404);
+            return $message;
+        }
+    }
+    public function selectTop5()
+    {
+        try {
+            $sql = "SELECT * FROM t_top5";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException) {
+            $message = json_encode(["Erro" => "Postagens Não Econtradas!"], JSON_UNESCAPED_UNICODE) . http_response_code(404);
+            return $message;
+        }
     }
 }

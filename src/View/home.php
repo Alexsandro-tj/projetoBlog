@@ -2,10 +2,8 @@
 <?php
 /** @var PostagensModel $model
  */
-/* require_once __DIR__ . '/../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
- */
+/** @var PostagensModel $modelPostagens */
+/** @var PostagensModel $modelTopPostagens */
 //header("Content-Type:text/html; charset=ISO-8859-1", true);
 // conexão com BD MySQL
 
@@ -22,31 +20,10 @@ try {
     echo "Erro de sistema: " . $e->getMessage() . $e->getCode();
 }
 
-
-$NPostagens = 0;
-/* $sql = "SELECT * FROM t_apres";
-if ($result = mysqli_query($conexao, $sql)) {
-    if ($registro = mysqli_fetch_row($result)) {
-        $BLOCO_APRESENT = array(
-            "img" => "$registro[2]",
-            "nome" => "$registro[1]",
-            "descri" => "$registro[1]"
-        );
-    }
-} */
-
- $BLOCO_POST = []; 
-$sql = "SELECT * FROM t_post";
-if ($result = mysqli_query($conexao, $sql))
-    while ($registro = mysqli_fetch_row($result)) {
-        $BLOCO_POST[] = $registro;
-    } 
-
-/* mysqli_close($conexao); */
 function exibe_categoria(string $nome, bool $selecionado)
 {
-    $texto = ($selecionado)? "<span class = 'w3-tag w3-black w3-margin-bottom'>"
-    : "<span class = 'w3-tag w3-light-grey w3-small w3-margin-bottom'>";
+    $texto = ($selecionado) ? "<span class = 'w3-tag w3-black w3-margin-bottom'>"
+        : "<span class = 'w3-tag w3-light-grey w3-small w3-margin-bottom'>";
 
     $texto = $texto . $nome . "</span>";
     return ($texto);
@@ -93,7 +70,7 @@ function rodape(string $autor)
 </head>
 
 <body class="w3-light-grey">
-    
+
     <!--Cabeçalho-->
     <?php
     echo monta_cabecalho_principal($model->registro[0]['autor']);
@@ -104,24 +81,25 @@ function rodape(string $autor)
         <div class="w3-col w3-container " style="width:65%">
 
             <?php
+            $NPostagens = 0;
             while ($NPostagens < 2) {
             ?>
                 <div class="w3-card-4 w3-margin w3-white">
-                    <img src=" <?php echo $BLOCO_POST[$NPostagens][1] ?>" alt="Nature" style="width:100%;height: 350px;">
+                    <img src=" <?php echo $modelPostagens->registro[$NPostagens]["img"] ?>" alt="Nature" style="width:100%;height: 350px;">
 
                     <div class="w3-container">
-                        <h3><?php echo $BLOCO_POST[$NPostagens][0] . " - " ?> <b><?php echo $BLOCO_POST[$NPostagens][2] ?></b></h3>
-                        <h5> <?php echo $BLOCO_POST[$NPostagens][3] ?> <span class="w3-opacity"><?php echo $BLOCO_POST[$NPostagens][4] ?></span></h5>
+                        <h3><?php echo $modelPostagens->registro[$NPostagens]["id"] . " - " ?> <b><?php echo $modelPostagens->registro[$NPostagens]["titulo"] ?></b></h3>
+                        <h5> <?php echo $modelPostagens->registro[$NPostagens]["stitulo"] ?> <span class="w3-opacity"><?php echo $modelPostagens->registro[$NPostagens]["data"] ?></span></h5>
                     </div>
 
                     <div class="w3-container">
-                        <p><?php echo $BLOCO_POST[$NPostagens][5] ?></p>
+                        <p><?php echo $modelPostagens->registro[$NPostagens]["texto"] ?></p>
                         <div class="w3-row">
                             <div class="w3-colum" style="width:80%">
                                 <p><button class="w3-button w3-padding-large w3-white w3-border">Leia Mais...</button></p>
                             </div>
                             <div class="w3-colum w3-hide-small" style="width:20%">
-                                <p><span class="w3-padding-large w3-right"><b>COMENTÁRIOS</b><span class="w3-tag"><?php echo $BLOCO_POST[$NPostagens][6] ?></span></span></p>
+                                <p><span class="w3-padding-large w3-right"><b>COMENTÁRIOS</b><span class="w3-tag"><?php echo $modelPostagens->registro[$NPostagens]["comentarios"] ?></span></span></p>
                             </div>
                         </div>
                     </div>
@@ -155,16 +133,10 @@ function rodape(string $autor)
                     </div>
                     <ul class="w3-ul w3-hoverable w3-white">
                         <?php
-                        $sql = "SELECT * FROM t_top5";
-                        if ($result = mysqli_query($conexao, $sql)) {
-                            if ($registros = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
-
-                                foreach ($registros as $registro) {
-                                    echo "<li class='w3-padding-16'>
+                        foreach ($modelTopPostagens->registro as $registro) {
+                            echo "<li class='w3-padding-16'>
                                 <img src='$registro[img]' alt='' class='w3-left w3-margin-right' style='width:50px'> <span class='w3-large'>$registro[titulo]</span> <br>
                                 <span>Comentários: $registro[ncoment]</span>";
-                                }
-                            };
                         }
                         ?>
                     </ul>
