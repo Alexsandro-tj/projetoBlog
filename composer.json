@@ -2,7 +2,7 @@
     "name": "usurio/blog_pessoal",
     "autoload": {
         "psr-4": {
-            "Usurio\\BlogPessoal\\": "src/"
+            "App\\": "src/"
         }
     },
     "authors": [
