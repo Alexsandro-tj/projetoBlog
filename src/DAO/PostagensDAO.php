@@ -1,8 +1,14 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
-$dotenv->load();
+namespace App\DAO;
+
+use PDO;
+use PDOException;
+use Dotenv\Dotenv;
+
+
+// require_once __DIR__ . '/../vendor/autoload.php';
+
 
 class PostagensDAO
 {
@@ -18,7 +24,6 @@ class PostagensDAO
         $pass = $_ENV['DB_PASS'];
         try {
             $dsn = "mysql:host={$host};port=$port;dbname=$db";
-            $this->conexao = new PDO($dsn, $user, $pass);
 
             $option = [
 
@@ -26,6 +31,7 @@ class PostagensDAO
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
             ];
+            $this->conexao = new PDO($dsn, $user, $pass, $option);
         } catch (PDOException $e) {
             echo "Erro de sistema: " . $e->getMessage() . $e->getCode();
         }

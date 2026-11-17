@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Controller;
+
+use App\Model\PostagensModel;
 
 class PostagensController
 {
@@ -11,9 +14,8 @@ class PostagensController
     public static function verifyCredencials() {}
     public static function homePage()
     {
-        require_once __DIR__ . '/../Model/PostagensModel.php';
         $model = new PostagensModel;
         $model->showApresentacaoOwner();
-        require_once __DIR__ . '/../View/home.php';
+        require_once __DIR__ . '/../../View/home.php';
     }
 }
